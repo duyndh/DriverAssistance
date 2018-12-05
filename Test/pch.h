@@ -10,8 +10,12 @@
 #define PCH_H
 
 // TODO: add headers that you want to pre-compile here
-#include "../CoreLibrary/stdafx.h"
 
-#pragma comment(lib, "CoreLibrary.lib")
+#include <windows.h>
+#include <iostream>
+#include <string>
+
+using namespace std;
+
 
 #endif //PCH_H

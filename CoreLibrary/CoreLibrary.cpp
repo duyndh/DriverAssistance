@@ -3,8 +3,9 @@
 
 #include "stdafx.h"
 
-void TestImage(const char *fileName)
+void TestImage(const char* fileName)
 {
 	Mat img = imread(fileName);
 	imshow("Test", img);
+	waitKey(0);
 }

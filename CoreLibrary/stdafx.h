@@ -11,16 +11,16 @@
 // Windows Header Files
 #include <windows.h>
 
+
+
+// reference additional headers your program requires here
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
-#pragma comment(lib, "opencv_world343d.lib")
-//#pragma comment(lib, "opencv_world343.lib")
-
-#include <iostream>
-
-using namespace std;
 using namespace cv;
 
-// reference additional headers your program requires here
-void TestImage(const char *fileName);
+#if _DEBUG
+	#pragma comment(lib, "opencv_world343d.lib")
+#else
+	#pragma comment(lib, "opencv_world343.lib")
+#endif

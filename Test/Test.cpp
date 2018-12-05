@@ -3,10 +3,20 @@
 
 #include "pch.h"
 
+typedef void(__stdcall *_TestImage)(const char*); _TestImage TestImage;
+
+void ImportLibrary(LPCWSTR libraryName)
+{
+	HMODULE hModule = LoadLibraryW(libraryName);
+
+	TestImage = (_TestImage)GetProcAddress(hModule, "TestImage");
+	
+}
+
 int main()
 {
-	TestImage("test.png");
-	waitKey(0);
+	ImportLibrary(L"E:\\workspace\\NhapMonUngDungDiDong\\DriverAssistance\\x64\\Debug\\CoreLibrary.dll");
+	TestImage("image.png");
 
 	return 0;
 }
