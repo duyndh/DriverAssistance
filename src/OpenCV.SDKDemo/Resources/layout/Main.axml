@@ -28,6 +28,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Face detection" />
+	<Button
+		android:id="@+id/laneDetection"
+		android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+		android:text="Lane detection"
+		/>
     <Button
         android:id="@+id/colorBlobDetection"
         android:layout_width="fill_parent"

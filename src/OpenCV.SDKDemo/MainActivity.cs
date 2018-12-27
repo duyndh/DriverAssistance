@@ -6,6 +6,7 @@ using OpenCV.SDKDemo.CameraControl;
 using OpenCV.SDKDemo.CameraPreview;
 using OpenCV.SDKDemo.ColorBlobDetection;
 using OpenCV.SDKDemo.FaceDetect;
+using OpenCV.SDKDemo.LaneDetection;
 using OpenCV.SDKDemo.ImageManipulations;
 using OpenCV.SDKDemo.MixedProcessing;
 using OpenCV.SDKDemo.Puzzle;
@@ -34,6 +35,9 @@ namespace OpenCV.SDKDemo
 
             FindViewById<Button>(Resource.Id.faceDetection)
                 .Click += (s, e) => StartActivity(typeof(FaceDetectActivity));
+
+            FindViewById<Button>(Resource.Id.laneDetection)
+                .Click += (s, e) => StartActivity(typeof(LaneDetectionActivity));
 
             FindViewById<Button>(Resource.Id.colorBlobDetection)
                 .Click += (s, e) => StartActivity(typeof(ColorBlobDetectionActivity));

@@ -60,6 +60,10 @@
     <Compile Include="FaceDetect\DetectionBasedTracker.cs" />
     <Compile Include="FaceDetect\FaceDetectActivity.cs" />
     <Compile Include="ImageManipulations\ImageManipulationsActivity.cs" />
+    <Compile Include="LaneDetection\LaneDetectionActivity.cs" />
+    <Compile Include="LaneDetection\LaneDetector.cs" />
+    <Compile Include="LaneDetection\LaneMarkingsFilter.cs" />
+    <Compile Include="LaneDetection\PerspectiveTransformer.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MixedProcessing\MixedProcessing.cs" />
     <Compile Include="Puzzle\PuzzleActivity.cs" />
@@ -133,9 +137,14 @@
     <Content Include="FaceDetect\jni\Application.mk" />
     <Content Include="FaceDetect\jni\DetectionBasedTracker_jni.cpp" />
     <Content Include="FaceDetect\jni\DetectionBasedTracker_jni.h" />
+    <AndroidResource Include="Resources\layout\lane_detection_surface_view.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <Content Include="MixedProcessing\jni\Android.mk" />
     <Content Include="MixedProcessing\jni\Application.mk" />
     <Content Include="MixedProcessing\jni\jni_part.cpp" />
+    <AndroidResource Include="Resources\drawable\test.png" />
+    <AndroidResource Include="Resources\drawable\test1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

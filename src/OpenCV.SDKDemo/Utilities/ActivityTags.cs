@@ -10,5 +10,6 @@ namespace OpenCV.SDKDemo.Utilities
         public const string CameraCalibration = "CameraCalibration";
         public const string ColorBlobDetection = "ColorBlobDetection";
         public const string FaceDetect = "FaceDetect";
+        public const string LaneDetection = "LaneDetection";
     }
 }
