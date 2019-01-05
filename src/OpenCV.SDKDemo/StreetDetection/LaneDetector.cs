@@ -3,7 +3,7 @@ using OpenCV.Core;
 using OpenCV.ImgProc;
 using System.Collections.Generic;
 
-namespace OpenCV.SDKDemo.LaneDetection
+namespace OpenCV.SDKDemo.StreetDetection
 {
     class LaneDetector
     {

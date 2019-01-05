@@ -13,7 +13,7 @@ using Android.Widget;
 using OpenCV.Core;
 using OpenCV.ImgProc;
 
-namespace OpenCV.SDKDemo.LaneDetection
+namespace OpenCV.SDKDemo.StreetDetection
 {
     public class PerspectiveTransformer
     {
@@ -24,16 +24,16 @@ namespace OpenCV.SDKDemo.LaneDetection
         /// <param name="transform"> transformation matrix </param>
         /// <param name="inv_transform"> inverse transformation matrix </param>
         /// <param name="warp"> wrapped zone of interest </param>
-        public void GetBirdEye(Mat src, float marginX, float marginY, out Mat transform, out Mat inv_transform, out Mat warp)
+        public void GetBirdEye(Mat bin, Mat src, float marginX, float marginY, out Mat transform, out Mat inv_transform, out Mat warp)
         {
             // Create perspective in front of the car
             Core.Point[] sourcePeaks =
             {
-                new Core.Point(src.Width() * marginX,         src.Height() * marginY),
-                new Core.Point(src.Width() * (1 - marginX),   src.Height() * marginY),
-                new Core.Point(src.Width(),                   src.Height()),
-                new Core.Point(0,                               src.Height()),
-                new Core.Point(src.Width() * marginX,         src.Height() * marginY)
+                new Core.Point(bin.Width() * marginX,         bin.Height() * marginY),
+                new Core.Point(bin.Width() * (1 - marginX),   bin.Height() * marginY),
+                new Core.Point(bin.Width(),                   bin.Height()),
+                new Core.Point(0,                               bin.Height()),
+                new Core.Point(bin.Width() * marginX,         bin.Height() * marginY)
             };
             MatOfPoint2f sourceMat = new MatOfPoint2f(
                     sourcePeaks[0],
@@ -45,9 +45,9 @@ namespace OpenCV.SDKDemo.LaneDetection
             Core.Point[] targetPeaks =
             {
                 new Core.Point(0,               0),
-                new Core.Point(src.Width(),   0),
-                new Core.Point(src.Width(),   src.Height()),
-                new Core.Point(0,               src.Height()),
+                new Core.Point(bin.Width(),   0),
+                new Core.Point(bin.Width(),   bin.Height()),
+                new Core.Point(0,               bin.Height()),
                 new Core.Point(0,               0)
             };
             // Generate transformation matrix in both directions
@@ -60,8 +60,8 @@ namespace OpenCV.SDKDemo.LaneDetection
             
             transform = Imgproc.GetPerspectiveTransform(sourceMat, targetMat);
             inv_transform = Imgproc.GetPerspectiveTransform(targetMat, sourceMat);
-            warp = new Mat(src.Size(), src.Type());
-            Imgproc.WarpPerspective(src, warp, transform, src.Size(), Imgproc.InterLinear);
+            warp = new Mat(bin.Size(), bin.Type());
+            Imgproc.WarpPerspective(bin, warp, transform, bin.Size(), Imgproc.InterLinear);
 
             // Draw
             for (int iPeak = 0; iPeak < sourcePeaks.GetLength(0) - 1; iPeak++)

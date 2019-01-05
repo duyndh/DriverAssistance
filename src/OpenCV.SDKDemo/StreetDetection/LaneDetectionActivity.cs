@@ -17,9 +17,8 @@ using OpenCV.SDKDemo.Utilities;
 using OpenCV.ImgProc;
 using Size = OpenCV.Core.Size;
 using Android.Graphics;
-//using Android.Graphics;
 
-namespace OpenCV.SDKDemo.LaneDetection
+namespace OpenCV.SDKDemo.StreetDetection
 {
     [Activity(Label = ActivityTags.LaneDetection,
         ScreenOrientation = ScreenOrientation.Landscape,
@@ -41,6 +40,8 @@ namespace OpenCV.SDKDemo.LaneDetection
         // Perspective transform logic
         private PerspectiveTransformer mTransformer;
 
+        // Sign detector
+        private SignDetector mSignDetector;
 
         public CameraBridgeViewBase mOpenCvCameraView { get; private set; }
 
@@ -109,6 +110,8 @@ namespace OpenCV.SDKDemo.LaneDetection
             mDetector = new LaneDetector();
             mLaneMarkFilter = new LaneMarkingsFilter();
             mTransformer = new PerspectiveTransformer();
+
+            mSignDetector = new SignDetector();
         }
 
         public void OnCameraViewStopped()
@@ -163,8 +166,9 @@ namespace OpenCV.SDKDemo.LaneDetection
 
         public Mat OnCameraFrame(CameraBridgeViewBase.ICvCameraViewFrame inputFrame)
         {
-            //mRgba = inputFrame.Rgba();                      
-            Bitmap bitmap = BitmapFactory.DecodeResource(Resources, Resource.Drawable.test);
+            //mRgba = inputFrame.Rgba();
+
+            Bitmap bitmap = BitmapFactory.DecodeResource(Resources, Resource.Drawable.test2);
             Mat mat = new Mat();
             Android.Utils.BitmapToMat(bitmap, mat);
             Imgproc.Resize(mat, mRgba, mRgba.Size());
@@ -174,6 +178,10 @@ namespace OpenCV.SDKDemo.LaneDetection
 
             // Start                    
 
+            // Sign detection
+            Mat binSign;
+            mSignDetector.Update(mRgba, out binSign);
+            
             // Filter image based on color to find markings
             Mat bin = mLaneMarkFilter.FilterMarkings(mRgba);
 
@@ -182,14 +190,28 @@ namespace OpenCV.SDKDemo.LaneDetection
             float marginY = 0.65f;
 
             Mat a, b, birdsEyeView;
-            mTransformer.GetBirdEye(bin, marginX, marginY, out a, out b, out birdsEyeView);
-
+            mTransformer.GetBirdEye(bin, mRgba, marginX, marginY, out a, out b, out birdsEyeView);
+        
             // Scale to mini bird view and draw to origin
             Mat birdEyeMiniView = new Mat(birdsEyeView.Size(), CvType.Cv8uc4);// new Mat(birdsEyeView.Height() / 2, birdsEyeView.Width() / 2, mRgba.Type(), new Scalar(0, 255, 0, 255));
             Imgproc.CvtColor(birdsEyeView, birdEyeMiniView, Imgproc.ColorGray2bgra);
             Imgproc.Resize(birdEyeMiniView, birdEyeMiniView, new Size(birdsEyeView.Cols() / 2, birdsEyeView.Rows() / 2));
-            birdEyeMiniView.CopyTo(mRgba.RowRange(0, birdsEyeView.Rows() / 2).ColRange(0, birdsEyeView.Cols() / 2));            
-                  
+            birdEyeMiniView.CopyTo(mRgba.RowRange(0, birdsEyeView.Rows() / 2).ColRange(0, birdsEyeView.Cols() / 2));
+
+            List<Core.Rect> rects = mSignDetector.GetSignRects();
+            SignDetector.SignType[] types = mSignDetector.GetSignTypes();
+            int iRect = 0;
+            foreach (var rect in rects)
+            {
+                if (types[iRect] != SignDetector.SignType.None)
+                    Imgproc.Rectangle(mRgba, new Core.Point(rect.X, rect.Y), new Core.Point(rect.X + rect.Width, rect.Y + rect.Height), new Scalar(255, 0, 0, 255), 3);
+                iRect++;
+            }
+            //Imgproc.Resize(binSign, binSign, new Size(mRgba.Cols() / 2, mRgba.Rows() / 2));
+            //Mat binSignMini = new Mat(binSign.Size(), CvType.Cv8uc4);
+            //Imgproc.CvtColor(binSign, binSignMini, Imgproc.ColorGray2bgra);
+            //binSignMini.CopyTo(mRgba.RowRange(0, mRgba.Rows() / 2).ColRange(mRgba.Cols() / 2, mRgba.Cols()));
+
             // End
 
             // Release

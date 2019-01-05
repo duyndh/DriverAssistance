@@ -13,7 +13,7 @@ using Android.Widget;
 using OpenCV.Core;
 using OpenCV.ImgProc;
 
-namespace OpenCV.SDKDemo.LaneDetection
+namespace OpenCV.SDKDemo.StreetDetection
 {
     public class LaneMarkingsFilter : IDisposable
     {
@@ -63,7 +63,7 @@ namespace OpenCV.SDKDemo.LaneDetection
         /// <param name="min"> lower hsv point </param>
         /// <param name="max"> upper hsv point </param>
         /// <returns> binary image (high pixels are in range) </returns>
-        private Mat FilterHSV(Mat src, Scalar min, Scalar max)
+        public Mat FilterHSV(Mat src, Scalar min, Scalar max)
         {
             Mat hsv = new Mat(src.Size(), src.Type());
             Imgproc.CvtColor(src, hsv, Imgproc.ColorBgr2hsv);
